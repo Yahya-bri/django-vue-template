@@ -1,5 +1,6 @@
 # frontend/Dockerfile
-FROM node:18-alpine
+# Use a multi-stage build to include Nginx
+FROM node:18-alpine as build
 
 WORKDIR /app
 
@@ -10,6 +11,12 @@ COPY . .
 
 RUN npm run build
 
-EXPOSE 5173
+# Stage 2: Nginx
+FROM nginx:alpine
 
-CMD ["npm", "run", "dev"]
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 8080
+
+CMD ["nginx", "-g", "daemon off;"]
