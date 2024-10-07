@@ -56,6 +56,20 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_ALLOW_ALL = True  # Or specify allowed origins
 
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'https://8000-idx-django-vue-templategit-1728294843245.cluster-6yqpn75caneccvva7hjo4uejgk.cloudworkstations.dev'
+    ]
+
+
 ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [
