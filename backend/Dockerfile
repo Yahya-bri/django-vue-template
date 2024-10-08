@@ -1,10 +1,10 @@
 # Use an official Python runtime as a parent image
-FROM python:3.9.4-slim
+FROM python:slim
 
-# Install netcat
-RUN apt-get update && \
-    apt-get -y install netcat && \
-    apt-get clean
+# # Install netcat
+# RUN apt-get update && \
+#     apt-get -y install netcat && \
+#     apt-get clean
 
 # Set the working directory in the container
 WORKDIR /app

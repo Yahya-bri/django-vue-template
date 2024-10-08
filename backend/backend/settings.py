@@ -65,9 +65,19 @@ CORS_ALLOW_METHODS = [
     'PUT',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    'https://8000-idx-django-vue-templategit-1728294843245.cluster-6yqpn75caneccvva7hjo4uejgk.cloudworkstations.dev'
-    ]
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "8000-idx-workspace.dev",
+    "8000-idx-django-vue-templategit-1728294843245.cluster-6yqpn75caneccvva7hjo4uejgk.cloudworkstations.dev",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://0.0.0.0",
+    "http://localhost",
+    "https://8000-idx-workspace.dev",
+    "https://8000-idx-django-vue-templategit-1728294843245.cluster-6yqpn75caneccvva7hjo4uejgk.cloudworkstations.dev",
+]
 
 
 ROOT_URLCONF = 'backend.urls'
