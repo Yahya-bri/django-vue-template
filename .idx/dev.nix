@@ -30,17 +30,17 @@
       # To run something each time the workspace is (re)started, use the `onStart` hook
     };
     # Enable previews and customize configuration
-    previews = {
-      enable = true;
-      previews = {
-        web = {
-          command = ["./runserver.sh"];
-          env = {
-            PORT = "$PORT";
-          };
-          manager = "web";
-        };
-      };
-    };
+    # previews = {
+    #   enable = true;
+    #   previews = {
+    #     web = {
+    #       command = ["./runserver.sh"];
+    #       env = {
+    #         PORT = "$PORT";
+    #       };
+    #       manager = "web";
+    #     };
+    #   };
+    # };
   };
 }
