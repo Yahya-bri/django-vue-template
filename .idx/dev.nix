@@ -2,57 +2,44 @@
 # see: https://developers.google.com/idx/guides/customize-idx-env
 { pkgs, ... }: {
   # Which nixpkgs channel to use.
-  channel = "stable-23.11"; # or "unstable"
-
+  channel = "stable-24.05"; # or "unstable"
   # Use https://search.nixos.org/packages to find packages
   packages = [
-    # pkgs.go
-    pkgs.python311
-    pkgs.python311Packages.pip
-    pkgs.nodejs_20
-    pkgs.nodePackages.nodemon
-    pkgs.docker-compose
+    pkgs.python3
+    pkgs.nodejs
+    pkgs.docker
   ];
-
   # Sets environment variables in the workspace
-  env = { };
-
-  services.docker.enable = true;
-
+  env = {};
   idx = {
     # Search for the extensions you want on https://open-vsx.org/ and use "publisher.id"
     extensions = [
-      # "vscodevim.vim"
+      "ms-python.python"
     ];
-
-    # Enable previews
+    workspace = {
+      # Runs when a workspace is first created with this `dev.nix` file
+      onCreate = {
+        create-venv = ''
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install -r backend/requirements.txt
+        '';
+        # Open editors for the following files by default, if they exist:
+        default.openFiles = ["README.md"];
+      };
+      # To run something each time the workspace is (re)started, use the `onStart` hook
+    };
+    # Enable previews and customize configuration
     previews = {
       enable = true;
       previews = {
-        # web = {
-        #   # Example: run "npm run dev" with PORT set to IDX's defined port for previews,
-        #   # and show it in IDX's web preview panel
-        #   command = ["npm" "run" "dev"];
-        #   manager = "web";
-        #   env = {
-        #     # Environment variables to set for your server
-        #     PORT = "$PORT";
-        #   };
-        # };
-      };
-    };
-
-    # Workspace lifecycle hooks
-    workspace = {
-      # Runs when a workspace is first created
-      onCreate = {
-        # Example: install JS dependencies from NPM
-        # npm-install = "npm install";
-      };
-      # Runs when the workspace is (re)started
-      onStart = {
-        # Example: start a background task to watch and re-build backend code
-        # watch-backend = "npm run watch-backend";
+        web = {
+          command = ["./runserver.sh"];
+          env = {
+            PORT = "$PORT";
+          };
+          manager = "web";
+        };
       };
     };
   };
