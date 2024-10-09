@@ -1,6 +1,8 @@
 from django.contrib import admin
-from .models import Library
+from .models import Library, Book, Member, BookLoan
 
-@admin.register(Library)
-class LibraryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'address', 'established_date')
+admin.site.register(Library)
+admin.site.register(Book)
+admin.site.register(Member)
+admin.site.register(BookLoan)
+
