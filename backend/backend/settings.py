@@ -70,15 +70,15 @@ ALLOWED_HOSTS = [
     "localhost",
     "8000-idx-workspace.dev",
     "8000-idx-django-vue-templategit-1728395120911.cluster-23wp6v3w4jhzmwncf7crloq3kw.cloudworkstations.dev",
+    "5173-idx-django-vue-templategit-1728395120911.cluster-23wp6v3w4jhzmwncf7crloq3kw.cloudworkstations.dev",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://0.0.0.0",
     "http://localhost",
     "https://8000-idx-workspace.dev",
-    "https://8000-idx-django-vue-templategit-1728395120911.cluster-23wp6v3w4jhzmwncf7crloq3kw.cloudworkstations.dev",
+    "https://5173-idx-django-vue-templategit-1728395120911.cluster-23wp6v3w4jhzmwncf7crloq3kw.cloudworkstations.dev",
 ]
-
 
 ROOT_URLCONF = 'backend.urls'
 
