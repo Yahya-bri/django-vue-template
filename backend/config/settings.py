@@ -142,5 +142,17 @@ CORS_ALLOWED_ORIGINS = [
     "http://frontend:80",
 ]
 
+# Add CSRF trusted origins
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:80",
+    "http://localhost",
+    "http://frontend",
+    "http://frontend:80",
+]
+
 # Add these settings to allow cookies in cross-origin requests
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = False  # Be explicit about allowed origins
+CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']  # Expose CSRF token in headers

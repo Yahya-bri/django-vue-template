@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 from .models import Item
@@ -30,6 +30,18 @@ def api_root(request):
         'message': 'Welcome to the API',
         'status': 'API is working correctly',
     })
+
+
+# Add a CSRF token endpoint
+@api_view(['GET'])
+@permission_classes([])  # Allow any - no authentication required
+def csrf_token(request):
+    """
+    Get a CSRF token for the client.
+    This view doesn't need to return anything special - just accessing it
+    will set the CSRF cookie that the client can then use.
+    """
+    return Response({"detail": "CSRF cookie set"})
 
 
 @extend_schema(tags=["Items"])

@@ -11,6 +11,13 @@ const apiClient = axios.create({
   }
 })
 
+// Helper function to get cookies (for CSRF token)
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
 // Request interceptor for API calls
 apiClient.interceptors.request.use(
   config => {
@@ -18,12 +25,32 @@ apiClient.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Basic ${token}`
     }
+    
+    // Get CSRF token from cookies if it exists
+    const csrfToken = getCookie('csrftoken');
+    if (csrfToken) {
+      config.headers['X-CSRFToken'] = csrfToken;
+    }
+    
     return config
   },
   error => {
     return Promise.reject(error)
   }
 )
+
+// Add a function to fetch CSRF token
+const fetchCSRFToken = async () => {
+  try {
+    // Update the path to correctly point to the backend CSRF endpoint
+    // This should match the URL defined in api/urls.py
+    await apiClient.get('/csrf/');
+    return true;
+  } catch (err) {
+    console.error('Error fetching CSRF token:', err);
+    return false;
+  }
+}
 
 export default {
   // Auth endpoints
@@ -49,5 +76,8 @@ export default {
   },
   deleteItem(id) {
     return apiClient.delete(`/items/${id}/`)
-  }
+  },
+  
+  // CSRF token management
+  fetchCSRFToken
 }

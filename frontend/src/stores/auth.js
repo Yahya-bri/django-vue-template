@@ -19,6 +19,13 @@ export const useAuthStore = defineStore('auth', () => {
       loading.value = true
       error.value = null
       
+      // Try to fetch CSRF token first, but proceed even if it fails
+      try {
+        await api.fetchCSRFToken()
+      } catch (csrfError) {
+        console.warn('Failed to fetch CSRF token, but proceeding with login:', csrfError)
+      }
+      
       // Create base64 token for Basic Auth
       const credentials = btoa(`${username}:${password}`)
       localStorage.setItem('token', credentials)
@@ -33,7 +40,11 @@ export const useAuthStore = defineStore('auth', () => {
       return true
     } catch (err) {
       console.error('Login error:', err)
-      error.value = err.response?.data?.detail || 'Failed to login'
+      if (err.message === 'Network Error') {
+        error.value = 'Cannot connect to the server. Please check that the backend is running.'
+      } else {
+        error.value = err.response?.data?.detail || 'Failed to login'
+      }
       return false
     } finally {
       loading.value = false
