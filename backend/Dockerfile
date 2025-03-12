@@ -1,25 +1,32 @@
-# Use an official Python runtime as a parent image
-FROM python:slim
+FROM python:3.11-slim
 
-# # Install netcat
-# RUN apt-get update && \
-#     apt-get -y install netcat && \
-#     apt-get clean
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV DEBUG=False
 
-# Set the working directory in the container
+# Set working directory
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
-COPY . /app
-
-# Upgrade pip to the latest version
-RUN python -m pip install --upgrade pip
-
-# Install any required packages specified in requirements.txt
+# Install dependencies
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Make the entrypoint.sh script executable
-RUN chmod +x /app/entrypoint.sh
+# Copy project
+COPY . .
 
-# Specify the entrypoint script to run when the container starts
-ENTRYPOINT ["/app/entrypoint.sh"]
+# Create a non-root user and switch to it
+RUN adduser --disabled-password --gecos '' django
+
+# Create staticfiles directory with proper permissions
+RUN mkdir -p /app/staticfiles
+RUN chown -R django:django /app
+RUN chmod -R 755 /app/staticfiles
+
+USER django
+
+# Expose port
+EXPOSE 8000
+
+# Run gunicorn
+CMD ["sh", "-c", "python manage.py migrate && python manage.py collectstatic --no-input && gunicorn --bind 0.0.0.0:8000 config.wsgi"]
